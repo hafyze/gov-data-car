@@ -1,3 +1,10 @@
-<h1>Welcome to your library project</h1>
-<p>Create your package using @sveltejs/package and preview/showcase your work with SvelteKit</p>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+    import { Alert } from 'flowbite-svelte';
+  </script>
+  
+  <div class="p-8">
+    <Alert>
+      <span class="font-medium">Info alert!</span>
+      Change a few things up and try submitting again.
+    </Alert>
+  </div>
