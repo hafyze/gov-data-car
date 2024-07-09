@@ -1,50 +1,45 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-# Load data from 2015 to 2024
-years = range(2015, 2025)
-dfs = []
+def load_data():
+    years = range(2015, 2025)
+    dfs = []
 
-for year in years:
-    url = f'https://storage.data.gov.my/transportation/cars_{year}.parquet'
-    try:
-        df = pd.read_parquet(url)
-        dfs.append(df)
-        print(f"Data for {year} loaded successfully.")
-    except Exception as e:
-        print(f"Failed to load data for {year}: {e}")
+    for year in years:
+        url = f'https://storage.data.gov.my/transportation/cars_{year}.parquet'
+        try:
+            df = pd.read_parquet(url)
+            dfs.append(df)
+            print(f"Data for {year} loaded successfully.")
+        except Exception as e:
+            print(f"Failed to load data for {year}: {e}")
 
-# Concatenate dataframes
-if dfs:
-    df_full = pd.concat(dfs, ignore_index=True)
-    print("Concatenation successful.")
-else:
-    df_full = pd.DataFrame()
-    print("Error in concatenation.")
+    if dfs:
+        df_full = pd.concat(dfs, ignore_index=True)
+        print("Concatenation successful.")
+    else:
+        df_full = pd.DataFrame()
+        print("Error in concatenation.")
 
-# Data Overview
-print("\n=Null Data Value=")
-print(df_full.isnull().sum())
+    if 'date_reg' in df_full.columns:
+        df_full['date_reg'] = pd.to_datetime(df_full['date_reg'])
 
-# Filter for BMW cars
-bmw_cars = df_full[df_full['maker'] == "BMW"]
+    return df_full
 
-# Visualizing Top BMW Models (2015-2024)
-plt.figure(figsize=(14, 8))
-sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[:10])
-plt.title('Top BMW Models (2015-2024)')
-plt.xticks(rotation=45)
-plt.xlabel('Model')
-plt.ylabel('Number of Registrations')
-plt.show()
+def get_bmw_data(df):
+    return df[df['maker'] == "BMW"]
 
-# Visualizing Least BMW Models (2015-2024)
-plt.figure(figsize=(14, 7))
-sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[-5:])
-plt.title('Top 5 Least Registered BMW Models (2015-2024)')
-plt.xticks(rotation=45) 
-plt.xlabel('Model')
-plt.ylabel('Number of Registrations')
-plt.tight_layout()
-plt.show()
+def get_subaru_and_toyota_data(df):
+    subaru_cars = df[df['maker'] == 'Subaru']
+    toyota_cars = df[df['maker'] == 'Toyota']
+
+    subaru_brz = subaru_cars[subaru_cars['model'] == 'BRZ']
+    toyota_86 = toyota_cars[toyota_cars['model'] == "86"]
+    toyota_GR86 = toyota_cars[toyota_cars['model'] == "GR86"]
+
+    return pd.concat([subaru_brz, toyota_86, toyota_GR86])
+
+def get_cumulative_growth(df):
+    df['year'] = df['date_reg'].dt.year
+    model_counts = df.groupby(['year', 'model']).size().reset_index(name='count')
+    model_counts['cumulative_count'] = model_counts.groupby('model')['count'].cumsum()
+    return model_counts
