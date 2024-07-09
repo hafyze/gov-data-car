@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+# Load data from 2015 to 2024
 years = range(2015, 2025)
 dfs = []
 
@@ -14,7 +15,7 @@ for year in years:
     except Exception as e:
         print(f"Failed to load data for {year}: {e}")
 
-# Concatenate dataframes (18-23)
+# Concatenate dataframes
 if dfs:
     df_full = pd.concat(dfs, ignore_index=True)
     print("Concatenation successful.")
@@ -22,27 +23,31 @@ else:
     df_full = pd.DataFrame()
     print("Error in concatenation.")
 
-# Convert Data (25-30)
-if 'date_reg' in df_full.columns:
-    df_full['date_reg'] = pd.to_datetime(df_full['date_reg'])
-
-for column in ['type', 'maker', 'model', 'colour', 'fuel', 'state']:
-    df_full[column] = df_full[column].astype('category')
-
 # Data Overview
 print("\n=Null Data Value=")
 print(df_full.isnull().sum())
 
-# Filter for BMW
-bmw_cars = df[df['maker'] == "BMW"]
+# Filter for BMW cars
+bmw_cars = df_full[df_full['maker'] == "BMW"]
 
-# Visualising Top BMW
-plt.figure(figsize=(14, 10))
-sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index)
+# Visualizing Top BMW Models (2015-2024)
+plt.figure(figsize=(14, 8))
+sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[:10])
 plt.title('Top BMW Models (2015-2024)')
-plt.xticks(rotation=90)
+plt.xticks(rotation=45)
+plt.xlabel('Model')
+plt.ylabel('Number of Registrations')
 plt.show()
 
+# Filter data for BMW cars
+bmw_cars = df_full[df_full['maker'] == "BMW"]
 
-## Predictive QUESTIONS: 
-#   - 
+# Distribution of 'model' for BMW cars
+plt.figure(figsize=(14, 7))
+sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[-5:])
+plt.title('Top 5 Least Registered BMW Models (2015-2024)')
+plt.xticks(rotation=45) 
+plt.xlabel('Model')
+plt.ylabel('Number of Registrations')
+plt.tight_layout()
+plt.show()
