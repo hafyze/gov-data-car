@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import axios from 'axios';
+	import { DarkMode, P, Heading } from 'flowbite-svelte';
 
   let bmwTop: string = '';
   let bmwLeast: string = '';
@@ -28,24 +29,34 @@
   });
 </script>
 
-<main>
-  <h1>BMW Top Models</h1>
+<body class="bg-white dark:bg-gray-800">
+  <DarkMode />
+
+  <Heading tag="h1" class="m-4" customSize="text-4xl font-extrabold  md:text-5xl lg:text-6xl">
+    BMW Top Models
+  </Heading>
   {#if bmwTop}
       <img src={bmwTop} alt="Top BMW Models (2015-2024)">
   {/if}
 
-  <h1>BMW Least Registered Models</h1>
+  <Heading tag="h1" class="m-4" customSize="text-4xl font-extrabold  md:text-5xl lg:text-6xl">
+    BMW Least Registered Models
+  </Heading>
   {#if bmwLeast}
       <img src={bmwLeast} alt="Least Registered BMW Models (2015-2024)">
   {/if}
 
-  <h1>Subaru BRZ vs Toyota 86 vs Toyota GR86</h1>
+  <Heading tag="h1" class="m-4" customSize="text-4xl font-extrabold  md:text-5xl lg:text-6xl">
+    Subaru BRZ vs Toyota 86 vs Toyota GR86
+  </Heading>
   {#if brz86}
       <img src={brz86} alt="Subaru BRZ vs Toyota 86 vs Toyota GR86">
   {/if}
 
-  <h1>Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86</h1>
+  <Heading tag="h1" class="m-4" customSize="text-4xl font-extrabold  md:text-5xl lg:text-6xl">
+    Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86
+  </Heading>
   {#if cumulativeGrowth}
       <img src={cumulativeGrowth} alt="Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86">
   {/if}
-</main>
+</body>

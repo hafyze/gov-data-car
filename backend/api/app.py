@@ -17,7 +17,7 @@ model_counts = get_cumulative_growth(brz_86_combined)
 
 @app.route('/api/bmw/top', methods=['GET'])
 def get_bmw_top():
-    plt.figure(figsize=(14, 8))
+    plt.figure(figsize=(10, 5))
     sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[:10])
     plt.title('Top BMW Models (2015-2024)')
     plt.xticks(rotation=45)
@@ -32,7 +32,7 @@ def get_bmw_top():
 
 @app.route('/api/bmw/least', methods=['GET'])
 def get_bmw_least():
-    plt.figure(figsize=(14, 7))
+    plt.figure(figsize=(10, 5))
     sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[-5:])
     plt.title('Top 5 Least Registered BMW Models (2015-2024)')
     plt.xticks(rotation=45)
@@ -48,7 +48,7 @@ def get_bmw_least():
 
 @app.route('/api/brz_86', methods=['GET'])
 def get_brz_86():
-    plt.figure(figsize=(14, 8))
+    plt.figure(figsize=(10, 5))
     sns.countplot(data=brz_86_combined, x='model', order=brz_86_combined['model'].value_counts().index)
     plt.title('Subaru BRZ vs Toyota 86 vs Toyota GR86')
     plt.xlabel('Model')
@@ -62,7 +62,7 @@ def get_brz_86():
 
 @app.route('/api/cumulative_growth', methods=['GET'])
 def get_cumulative_growth():
-    plt.figure(figsize=(14, 8))
+    plt.figure(figsize=(10, 5))
     sns.lineplot(data=model_counts, x='year', y='cumulative_count', hue='model', marker='o')
     plt.title('Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86 (2015-2024)')
     plt.xlabel('Year')
