@@ -39,10 +39,7 @@ plt.xlabel('Model')
 plt.ylabel('Number of Registrations')
 plt.show()
 
-# Filter data for BMW cars
-bmw_cars = df_full[df_full['maker'] == "BMW"]
-
-# Distribution of 'model' for BMW cars
+# Visualizing Least BMW Models (2015-2024)
 plt.figure(figsize=(14, 7))
 sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[-5:])
 plt.title('Top 5 Least Registered BMW Models (2015-2024)')
