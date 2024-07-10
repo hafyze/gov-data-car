@@ -108,7 +108,7 @@
           </div>
         </AccordionItem>
         <AccordionItem bind:open={items[3]}>
-          <span slot="header">Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86</span>
+          <span slot="header">Total of BRZ vs 86 vs GR86</span>
           <div class="py-2">
             <Heading tag="h4" class="my-2">Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86</Heading>
             {#if cumulativeGrowth}
