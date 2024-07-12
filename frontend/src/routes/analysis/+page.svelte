@@ -1,41 +1,43 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import axios from 'axios';
-  import { DarkMode, P, Heading, Sidebar, Img, Accordion, AccordionItem, Button } from 'flowbite-svelte';
-  import { page } from '$app/stores';
-  import { SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
-  import { ChartPieSolid, ColumnSolid, HomeSolid } from 'flowbite-svelte-icons';
+  import { onMount } from 'svelte'
+  import axios from 'axios'
+  import { DarkMode, P, Heading, Sidebar, Img, Accordion, AccordionItem, Button } from 'flowbite-svelte'
+  import { page } from '$app/stores'
+  import { SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte'
+  import { ChartPieSolid, ColumnSolid, HomeSolid } from 'flowbite-svelte-icons'
 
-  $: activeUrl = $page.url.pathname;
+  $: activeUrl = $page.url.pathname
 
-  let bmwTop: string = '';
-  let bmwLeast: string = '';
-  let brz86: string = '';
-  let cumulativeGrowth: string = '';
-  const items = Array(4).fill(false);
+  let bmwTop: string = ''
+  let bmwLeast: string = ''
+  let brz86: string = ''
+  let toyotaSubaru_CumulativeGrowth: string = ''
+  let germanCarGrowth: string = ''
+  const items = Array(5).fill(false)
 
-  const open_all = () => items.forEach((_, i) => (items[i] = true));
-  const close_all = () => items.forEach((_, i) => (items[i] = false));
+  const open_all = () => items.forEach((_, i) => (items[i] = true))
+  const close_all = () => items.forEach((_, i) => (items[i] = false))
 
   onMount(async () => {
-      const apiBaseUrl = 'http://127.0.0.1:5000';
+      const apiBaseUrl = 'http://127.0.0.1:5000'
 
       const fetchImage = async (endpoint: string): Promise<string> => {
           try {
-              const response = await axios.get(`${apiBaseUrl}${endpoint}`, { responseType: 'blob' });
-              const imageBlob = response.data;
-              return URL.createObjectURL(imageBlob);
+              const response = await axios.get(`${apiBaseUrl}${endpoint}`, { responseType: 'blob' })
+              const imageBlob = response.data
+              return URL.createObjectURL(imageBlob)
           } catch (error) {
-              console.error(`Error fetching image from ${endpoint}:`, error);
-              return '';
+              console.error(`Error fetching image from ${endpoint}:`, error)
+              return ''
           }
-      };
+      }
 
-      bmwTop = await fetchImage('/api/bmw/top');
-      bmwLeast = await fetchImage('/api/bmw/least');
-      brz86 = await fetchImage('/api/brz_86');
-      cumulativeGrowth = await fetchImage('/api/cumulative_growth');
-  });
+      bmwTop =                          await fetchImage('/api/bmw/top')
+      bmwLeast =                        await fetchImage('/api/bmw/least')
+      brz86 =                           await fetchImage('/api/brz_86')
+      toyotaSubaru_CumulativeGrowth =   await fetchImage('/api/cumulative_growth')
+      germanCarGrowth =                 await fetchImage('/api/german_cars')
+  })
 </script>
 
 <body class="bg-white dark:bg-gray-800">
@@ -111,8 +113,17 @@
           <span slot="header">Total of BRZ vs 86 vs GR86</span>
           <div class="py-2">
             <Heading tag="h4" class="my-2">Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86</Heading>
-            {#if cumulativeGrowth}
-              <Img src={cumulativeGrowth} alt="Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86" />
+            {#if toyotaSubaru_CumulativeGrowth}
+              <Img src={toyotaSubaru_CumulativeGrowth} alt="Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86" />
+            {/if}
+          </div>
+        </AccordionItem>
+        <AccordionItem bind:open={items[4]}>
+          <span slot="header">Growth German Cars</span>
+          <div class="py-2">
+            <Heading tag="h4" class="my-2">Cumulative Growth Audi, BMW, Mercedes Top 3 Models</Heading>
+            {#if germanCarGrowth}
+              <Img src={germanCarGrowth} alt="Cumulative Growth Audi, BMW, Mercedes Top 3 Models" />
             {/if}
           </div>
         </AccordionItem>

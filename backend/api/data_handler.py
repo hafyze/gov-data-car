@@ -1,7 +1,7 @@
 import pandas as pd
 
 def load_data():
-    years = range(2015, 2025)
+    years = range(2023, 2025)
     dfs = []
 
     for year in years:
@@ -43,3 +43,19 @@ def get_cumulative_growth(df):
     model_counts = df.groupby(['year', 'model']).size().reset_index(name='count')
     model_counts['cumulative_count'] = model_counts.groupby('model')['count'].cumsum()
     return model_counts
+
+def get_german_growth(df):
+    brands = ["BMW", "Mercedes Benz", "Audi"]
+    top_models = {}
+
+    for brand in brands:
+        brand_data = df[df['maker'] == brand]
+        top_models[brand] = brand_data['model'].value_counts().nlargest(3).index.tolist()
+
+    top_models_data = df[df['model'].isin(sum(top_models.values(), []))].copy()  
+
+    top_models_data.loc[:, 'year'] = top_models_data['date_reg'].dt.year
+    conti_brand = top_models_data.groupby(['year', 'model']).size().reset_index(name='count')
+    conti_brand['cumulative_count'] = conti_brand.groupby('model')['count'].cumsum()
+
+    return conti_brand
