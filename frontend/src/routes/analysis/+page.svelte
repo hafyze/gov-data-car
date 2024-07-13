@@ -6,40 +6,40 @@
   import { SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte'
   import { ChartPieSolid, ColumnSolid, HomeSolid } from 'flowbite-svelte-icons'
 
-  $: activeUrl = $page.url.pathname
+  $: activeUrl = $page.url.pathname;
 
-  let bmwTop: string = ''
-  let bmwLeast: string = ''
-  let brz86: string = ''
-  let toyotaSubaru_CumulativeGrowth: string = ''
-  let germanCarGrowth: string = ''
-  let supercarGrowth: string = ''
-  const items = Array(6).fill(false)
+  let bmwTop: string = '';
+  let bmwLeast: string = '';
+  let brz86: string = '';
+  let toyotaSubaru_CumulativeGrowth: string = '';
+  let germanCarGrowth: string = '';
+  let supercarGrowth: string = '';
+  const items = Array(6).fill(false);
 
-  const open_all = () => items.forEach((_, i) => (items[i] = true))
-  const close_all = () => items.forEach((_, i) => (items[i] = false))
+  const open_all = () => items.forEach((_, i) => (items[i] = true));
+  const close_all = () => items.forEach((_, i) => (items[i] = false));
 
   onMount(async () => {
-      const apiBaseUrl = 'http://127.0.0.1:5000'
+    const apiBaseUrl = 'http://127.0.0.1:5000';
 
-      const fetchImage = async (endpoint: string): Promise<string> => {
-          try {
-              const response = await axios.get(`${apiBaseUrl}${endpoint}`, { responseType: 'blob' })
-              const imageBlob = response.data
-              return URL.createObjectURL(imageBlob)
-          } catch (error) {
-              console.error(`Error fetching image from ${endpoint}:`, error)
-              return ''
-          }
+    const fetchImage = async (endpoint: string): Promise<string> => {
+      try {
+        const response = await axios.get(`${apiBaseUrl}${endpoint}`, { responseType: 'blob' });
+        const imageBlob = response.data;
+        return URL.createObjectURL(imageBlob);
+      } catch (error) {
+        console.error(`Error fetching image from ${endpoint}:`, error);
+        return '';
       }
+    };
 
-      bmwTop                        = await fetchImage('/api/bmw/top')
-      bmwLeast                      = await fetchImage('/api/bmw/least')
-      brz86                         = await fetchImage('/api/brz_86')
-      toyotaSubaru_CumulativeGrowth = await fetchImage('/api/cumulative_growth')
-      germanCarGrowth               = await fetchImage('/api/german_cars')
-      supercarGrowth                = await fetchImage('/api/supercars')  
-  })
+    bmwTop                        = await fetchImage('/api/bmw/top');
+    bmwLeast                      = await fetchImage('/api/bmw/least');
+    brz86                         = await fetchImage('/api/brz_86');
+    toyotaSubaru_CumulativeGrowth = await fetchImage('/api/cumulative_growth');
+    germanCarGrowth               = await fetchImage('/api/german_cars');
+    supercarGrowth                =  await fetchImage('/api/supercars');
+  });
 </script>
 
 <body class="bg-white dark:bg-gray-800">

@@ -63,13 +63,12 @@ def get_brz_86():
     return send_file(img, mimetype='image/png')
 
 @app.route('/api/cumulative_growth', methods=['GET'])
-def get_cumulative_growth_route():
+def get_cumulative_growth():
     plt.figure(figsize=(10, 5))
     sns.lineplot(data=model_counts, x='year', y='cumulative_count', hue='model', marker='o')
     plt.title('Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86 (2015-2024)')
     plt.xlabel('Year')
     plt.ylabel('Counts')
-    plt.yticks(0)
     plt.legend(title='Model')
     
     img = io.BytesIO()
