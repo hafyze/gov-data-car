@@ -48,17 +48,31 @@ def get_german_growth(df):
     brands = ["BMW", "Mercedes Benz", "Audi"]
     top_models = {}
 
+    latest_date = df['date_reg'].max()
+    most_recent_complete_year = latest_date.year
+
+    df_filtered = df[df['date_reg'] <= latest_date]
+
     for brand in brands:
-        brand_data = df[df['maker'] == brand]
-        top_models[brand] = brand_data['model'].value_counts().nlargest(3).index.tolist()
+        brand_data = df_filtered[df_filtered['maker'] == brand]
+        top_models[brand] = brand_data['model'].value_counts().nsmallest(3).index.tolist()
 
-    top_models_data = df[df['model'].isin(sum(top_models.values(), []))].copy()  
+    top_models_data = df_filtered[df_filtered['model'].isin(sum(top_models.values(), []))].copy()
+    top_models_data['year'] = top_models_data['date_reg'].dt.year
+    top_models_data['month'] = top_models_data['date_reg'].dt.month
 
-    top_models_data.loc[:, 'year'] = top_models_data['date_reg'].dt.year
-    conti_brand = top_models_data.groupby(['year', 'model']).size().reset_index(name='count')
+    conti_brand = top_models_data.groupby(['year', 'month', 'model']).size().reset_index(name='count')
     conti_brand['cumulative_count'] = conti_brand.groupby('model')['count'].cumsum()
 
-    return conti_brand
+    # Create a 'date' column for proper x-axis plotting
+    conti_brand['date'] = pd.to_datetime(conti_brand[['year', 'month']].assign(day=1))
+
+    # Resample the data to yearly intervals for plotting
+    conti_brand_yearly = conti_brand.groupby(['year', 'model']).agg({
+        'cumulative_count': 'max'
+    }).reset_index()
+
+    return conti_brand, conti_brand_yearly
 
 def get_supercar_growth(df):
     brands = ["Lamborghini", "Ferrari", "Mclaren"]
