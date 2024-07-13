@@ -59,3 +59,19 @@ def get_german_growth(df):
     conti_brand['cumulative_count'] = conti_brand.groupby('model')['count'].cumsum()
 
     return conti_brand
+
+def get_supercar_growth(df):
+    brands = ["Lamborghini", "Ferrari", "Mclaren"]
+    top_models = {}
+
+    for brand in brands:
+        brand_data = df[df['maker'] == brand]
+        top_models[brand] = brand_data['model'].value_counts().nlargest(3).index.tolist()
+
+    top_models_data = df[df['model'].isin(sum(top_models.values(), []))].copy()
+    top_models_data.loc[:, 'year'] = top_models_data['date_reg'].dt.year
+
+    supercar_brand = top_models_data.groupby(['year', 'model']).size().reset_index(name='count')
+    supercar_brand['cumulative_count'] = supercar_brand.groupby('model')['count'].cumsum()
+
+    return supercar_brand

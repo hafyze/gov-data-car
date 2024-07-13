@@ -13,7 +13,8 @@
   let brz86: string = ''
   let toyotaSubaru_CumulativeGrowth: string = ''
   let germanCarGrowth: string = ''
-  const items = Array(5).fill(false)
+  let supercarGrowth: string = ''
+  const items = Array(6).fill(false)
 
   const open_all = () => items.forEach((_, i) => (items[i] = true))
   const close_all = () => items.forEach((_, i) => (items[i] = false))
@@ -32,11 +33,12 @@
           }
       }
 
-      bmwTop =                          await fetchImage('/api/bmw/top')
-      bmwLeast =                        await fetchImage('/api/bmw/least')
-      brz86 =                           await fetchImage('/api/brz_86')
-      toyotaSubaru_CumulativeGrowth =   await fetchImage('/api/cumulative_growth')
-      germanCarGrowth =                 await fetchImage('/api/german_cars')
+      bmwTop                        = await fetchImage('/api/bmw/top')
+      bmwLeast                      = await fetchImage('/api/bmw/least')
+      brz86                         = await fetchImage('/api/brz_86')
+      toyotaSubaru_CumulativeGrowth = await fetchImage('/api/cumulative_growth')
+      germanCarGrowth               = await fetchImage('/api/german_cars')
+      supercarGrowth                = await fetchImage('/api/supercars')  
   })
 </script>
 
@@ -124,6 +126,15 @@
             <Heading tag="h4" class="my-2">Cumulative Growth Audi, BMW, Mercedes Top 3 Models</Heading>
             {#if germanCarGrowth}
               <Img src={germanCarGrowth} alt="Cumulative Growth Audi, BMW, Mercedes Top 3 Models" />
+            {/if}
+          </div>
+        </AccordionItem>
+        <AccordionItem bind:open={items[5]}>
+          <span slot="header">Supercars Growth</span>
+          <div class="py-2">
+            <Heading tag="h4" class="my-2">Cumulative Growth Ferrari, Lamborghini, Mclaren Top 3 Models</Heading>
+            {#if supercarGrowth}
+              <Img src={supercarGrowth} alt="Cumulative Growth Audi, BMW, Mercedes Top 3 Models" />
             {/if}
           </div>
         </AccordionItem>

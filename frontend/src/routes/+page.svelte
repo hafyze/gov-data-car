@@ -50,7 +50,7 @@
             <A class="mb-6 text-lg lg:text-xl sm:px-16 xl: dark:text-green-400" 
                 href='/analysis'
                 >
-                See the data
+                See the Data Analysis
             </A>
         </main>
         
