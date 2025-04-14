@@ -45,7 +45,7 @@
                 Malaysia Car Analysis
             </Heading>
             <P class="mb-6 text-lg lg:text-xl sm:px-16 xl: dark:text-gray-400">
-                Looking on all car makers statistics in Malaysia
+                Looking on all car makers registration statistics in Malaysia
             </P>
             <A class="mb-6 text-lg lg:text-xl sm:px-16 xl: dark:text-green-400" 
                 href='/analysis'

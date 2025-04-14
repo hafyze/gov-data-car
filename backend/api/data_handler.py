@@ -1,7 +1,7 @@
 import pandas as pd
 
 def load_data():
-    years = range(2015, 2025)
+    years = range(2015, 2026)
     dfs = []
 
     for year in years:
