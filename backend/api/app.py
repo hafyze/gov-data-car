@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import seaborn as sns
 
-from data_handler import load_data, get_bmw_data, get_subaru_and_toyota_data, get_cumulative_growth, get_german_growth, get_supercar_growth
+from data_handler import load_data, get_bmw_data, get_subaru_and_toyota_data, get_cumulative_growth, get_german_growth, get_supercar_growth, get_proton_data
 
 app = Flask(__name__)
 CORS(app)
@@ -13,16 +13,32 @@ CORS(app)
 # Load and process data
 df_full = load_data()
 bmw_cars = get_bmw_data(df_full)
+proton_cars = get_proton_data(df_full)
 brz_86_combined = get_subaru_and_toyota_data(df_full)
 model_counts = get_cumulative_growth(brz_86_combined)
 german_brand_counts = get_german_growth(df_full)
 supercar_brand_counts = get_supercar_growth(df_full)
 
+@app.route('/api/proton/top', methods=['GET'])
+def get_proton_top():
+    plt.figure(figsize=(10,5))
+    sns.countplot(data=proton_cars, x='model', order=proton_cars['model'].value_counts().index[:10])
+    plt.title('Top Proton Models After 2020')
+    plt.xticks(rotation=45)
+    plt.xlabel('Model')
+    plt.ylabel('Number of Registrations')
+
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plt.close()
+    return send_file(img, mimetype='image/png')
+
 @app.route('/api/bmw/top', methods=['GET'])
 def get_bmw_top():
     plt.figure(figsize=(10, 5))
     sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[:10])
-    plt.title('Top BMW Models (2015-2024)')
+    plt.title('Top BMW Models (2015-2025)')
     plt.xticks(rotation=45)
     plt.xlabel('Model')
     plt.ylabel('Number of Registrations')
@@ -37,7 +53,7 @@ def get_bmw_top():
 def get_bmw_least():
     plt.figure(figsize=(10, 5))
     sns.countplot(data=bmw_cars, x='model', order=bmw_cars['model'].value_counts().index[-5:])
-    plt.title('Top 5 Least Registered BMW Models (2015-2024)')
+    plt.title('Top 5 Least Registered BMW Models (2015-2025)')
     plt.xticks(rotation=45)
     plt.xlabel('Model')
     plt.ylabel('Number of Registrations')
@@ -67,7 +83,7 @@ def get_brz_86():
 def get_cumulative_growth():
     plt.figure(figsize=(10, 5))
     sns.lineplot(data=model_counts, x='year', y='cumulative_count', hue='model', marker='o')
-    plt.title('Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86 (2015-2024)')
+    plt.title('Cumulative Growth of Subaru BRZ, Toyota 86 and Toyota GR86 (2015-2025)')
     plt.xlabel('Year')
     plt.ylabel('Counts')
     plt.legend(title='Model')

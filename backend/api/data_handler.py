@@ -25,6 +25,10 @@ def load_data():
 
     return df_full
 
+def get_proton_data(df):
+    df['date_reg'] = pd.to_datetime(df['date_reg'], errors='coerce')
+    return df[(df['maker'] == "Proton") & (df['date_reg'].dt.year >= 2020)]
+
 def get_bmw_data(df):
     return df[df['maker'] == "BMW"]
 
@@ -55,7 +59,11 @@ def get_german_growth(df):
 
     for brand in brands:
         brand_data = df_filtered[df_filtered['maker'] == brand]
-        top_models[brand] = brand_data['model'].value_counts().nsmallest(3).index.tolist()
+        # Filter out very rare models (optional, to avoid noise)
+        model_counts = brand_data['model'].value_counts()
+        filtered_models = model_counts[model_counts > 10]  # Only consider models with >10 total registrations
+        least_common_models = filtered_models.nsmallest(3).index.tolist()
+        top_models[brand] = least_common_models
 
     top_models_data = df_filtered[df_filtered['model'].isin(sum(top_models.values(), []))].copy()
     top_models_data['year'] = top_models_data['date_reg'].dt.year

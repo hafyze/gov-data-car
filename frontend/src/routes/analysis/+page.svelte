@@ -8,6 +8,7 @@
 
   $: activeUrl = $page.url.pathname;
 
+  let protonTop = ''
   let bmwTop: string = '';
   let bmwLeast: string = '';
   let brz86: string = '';
@@ -33,12 +34,14 @@
       }
     };
 
+    protonTop                     = await fetchImage('/api/proton/top');
     bmwTop                        = await fetchImage('/api/bmw/top');
     bmwLeast                      = await fetchImage('/api/bmw/least');
     brz86                         = await fetchImage('/api/brz_86');
     toyotaSubaru_CumulativeGrowth = await fetchImage('/api/cumulative_growth');
     germanCarGrowth               = await fetchImage('/api/german_cars');
     supercarGrowth                =  await fetchImage('/api/supercars');
+
   });
 </script>
 
@@ -89,7 +92,7 @@
           <Heading tag="h4" class="my-2">BMW Most Registered Models</Heading>
           <div class="pt-7">
             {#if bmwTop}
-              <Img src={bmwTop} alt="Top BMW Models (2015-2024)" />
+              <Img src={bmwTop} alt="Top BMW Models (2015-2025)" />
             {/if}
           </div>
         </AccordionItem>
@@ -98,7 +101,7 @@
           <div class="py-2">
             <Heading tag="h4" class="my-2">BMW Least Registered Models</Heading>
             {#if bmwLeast}
-              <Img src={bmwLeast} alt="Least Registered BMW Models (2015-2024)" />
+              <Img src={bmwLeast} alt="Least Registered BMW Models (2015-2025)" />
             {/if}
           </div>
         </AccordionItem>
@@ -135,6 +138,15 @@
             <Heading tag="h4" class="my-2">Cumulative Growth Ferrari, Lamborghini, Mclaren Top 3 Models</Heading>
             {#if supercarGrowth}
               <Img src={supercarGrowth} alt="Cumulative Growth Audi, BMW, Mercedes Top 3 Models" />
+            {/if}
+          </div>
+        </AccordionItem>
+        <AccordionItem bind:open={items[6]}>
+          <span slot="header">Proton's Registration</span>
+          <div class="py-2">
+            <Heading tag="h4" class="my-2">Top 10 Proton Models Registrations after 2020</Heading>
+            {#if protonTop}
+              <Img src={protonTop} alt="Top 10 Proton Models Registrations" />
             {/if}
           </div>
         </AccordionItem>
